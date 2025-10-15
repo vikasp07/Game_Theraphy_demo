@@ -26,7 +26,7 @@ const Profile = () => {
     const errorDetails = error.response ? error.response.data : error.message;
     console.error(customMessage, errorDetails);
     // Optional: Send error logs to your backend logging endpoint
-    // axios.post("https://game-theraphy-backend.onrender.com/api/log", {
+    // axios.post("http://localhost:5000/api/log", {
     //   message: customMessage,
     //   error: errorDetails,
     // });
@@ -37,7 +37,7 @@ const Profile = () => {
     const fetchProfile = async () => {
       try {
         const res = await axios.get(
-          "https://game-theraphy-backend.onrender.com/api/detail",
+          "http://localhost:5000/api/detail",
           {
             headers: { "x-auth-token": token },
           }
@@ -74,7 +74,7 @@ const Profile = () => {
       formData.append("profilePic", selectedFile);
       try {
         const photoRes = await axios.post(
-          "https://game-theraphy-backend.onrender.com/api/detail/photo",
+          "http://localhost:5000/api/detail/photo",
           formData,
           {
             headers: {
@@ -103,7 +103,7 @@ const Profile = () => {
     console.log("Updating profile with payload:", payload);
     try {
       const res = await axios.patch(
-        "https://game-theraphy-backend.onrender.com/api/detail",
+        "http://localhost:5000/api/detail",
         payload,
         {
           headers: {
@@ -132,7 +132,7 @@ const Profile = () => {
         <div className="profile-detail">
           {profile.profilePic ? (
             <img
-              src={`https://game-theraphy-backend.onrender.com/${profile.profilePic.replace(/\\/g, "/")}`}
+              src={`http://localhost:5000/${profile.profilePic.replace(/\\/g, "/")}`}
               alt="Profile"
               className="profile-photo"
             />

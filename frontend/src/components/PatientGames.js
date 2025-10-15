@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useParams, useNavigate, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { io } from "socket.io-client";
 import { Bar, Line, Pie, Doughnut } from "react-chartjs-2";
 import {
@@ -16,6 +16,7 @@ import {
   Title,
 } from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
+import { isDemoMode } from "../demoConfig";
 import "./PatientGames.css"; // Use updated CSS (e.g., patientgraph.css)
 
 ChartJS.register(
@@ -31,11 +32,10 @@ ChartJS.register(
   ChartDataLabels
 );
 
-const socket = io("https://game-theraphy-backend.onrender.com"); // Connect to backend WebSocket server
+const socket = io("http://localhost:5000"); // Connect to backend WebSocket server
 
 const PatientGames = () => {
   const { patientId } = useParams();
-  const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
   // State variables for game progress
@@ -55,7 +55,6 @@ const PatientGames = () => {
   const [startTime, setStartTime] = useState("");
   const [endTime, setEndTime] = useState("");
   const [assignMessage, setAssignMessage] = useState("");
-  const [notifications, setNotifications] = useState([]);
 
   // Family form states
   const [familyName, setFamilyName] = useState("");
@@ -82,8 +81,20 @@ const PatientGames = () => {
   // Function to fetch game progress for the patient
   const fetchPatientGames = async () => {
     try {
+      if (!token && isDemoMode()) {
+        // Demo data for patient games
+        const demoGamesData = [
+          { _id: "1", gameName: "Memory Match", gameId: "memory_match", score: 85, totalTime: "45", timestamp: new Date().toISOString() },
+          { _id: "2", gameName: "Math Quiz", gameId: "math_quiz", score: 90, totalTime: "30", timestamp: new Date(Date.now() - 86400000).toISOString() },
+          { _id: "3", gameName: "Word Scramble", gameId: "word_scramble", score: 75, totalTime: "60", timestamp: new Date(Date.now() - 2 * 86400000).toISOString() },
+        ];
+        setGamesData(demoGamesData);
+        setErrorMessage("");
+        calculateProgressSummary(demoGamesData);
+        return;
+      }
       const res = await axios.get(
-        `https://game-theraphy-backend.onrender.com/api/guardian/patient/${patientId}`,
+        `http://localhost:5000/api/guardian/patient/${patientId}`,
         { headers: { "x-auth-token": token } }
       );
       setGamesData(res.data);
@@ -101,8 +112,17 @@ const PatientGames = () => {
   // Function to fetch tasks for the patient
   const fetchTasks = async () => {
     try {
+      if (!token && isDemoMode()) {
+        // Demo tasks
+        const demoTasks = [
+          { _id: "t1", taskDescription: "Complete Memory Match game", startTime: "10:00 AM", endTime: "11:00 AM", taskDate: new Date().toISOString(), completed: false },
+          { _id: "t2", taskDescription: "Practice Math Quiz for 15 minutes", startTime: "2:00 PM", endTime: "2:15 PM", taskDate: new Date().toISOString(), completed: true },
+        ];
+        setTasks(demoTasks);
+        return;
+      }
       const res = await axios.get(
-        `https://game-theraphy-backend.onrender.com/api/tasks/${patientId}`,
+        `http://localhost:5000/api/tasks/${patientId}`,
         { headers: { "x-auth-token": token } }
       );
       setTasks(res.data);
@@ -121,12 +141,13 @@ const PatientGames = () => {
 
     // Listen for real-time task notifications
     socket.on(`taskNotification-${patientId}`, (message) => {
-      setNotifications((prev) => [...prev, message]);
+      console.log("Task notification received:", message);
     });
 
     return () => {
       socket.off(`taskNotification-${patientId}`);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [patientId, token]);
 
   // Calculate overall progress summary from gamesData
@@ -272,7 +293,7 @@ const PatientGames = () => {
     try {
       const payload = { taskDescription, startTime, endTime };
       const res = await axios.post(
-        `https://game-theraphy-backend.onrender.com/api/tasks/${patientId}`,
+        `http://localhost:5000/api/tasks/${patientId}`,
         payload,
         {
           headers: {
@@ -286,7 +307,7 @@ const PatientGames = () => {
       await fetchTasks();
       // Send SMS notification
       const userRes = await axios.get(
-        `https://game-theraphy-backend.onrender.com/api/users/${patientId}`,
+        `http://localhost:5000/api/users/${patientId}`,
         { headers: { "x-auth-token": token } }
       );
       const userMobile = userRes.data.mobile;
@@ -295,7 +316,7 @@ const PatientGames = () => {
         message: `New task assigned: ${taskDescription} from ${startTime} to ${endTime}`,
       };
       await axios.post(
-        "https://game-theraphy-backend.onrender.com/api/notifications/send-sms",
+        "http://localhost:5000/api/notifications/send-sms",
         smsPayload,
         {
           headers: { "x-auth-token": token },
@@ -323,7 +344,7 @@ const PatientGames = () => {
         imageUrl: familyImageUrl,
       };
       const res = await axios.post(
-        `https://game-theraphy-backend.onrender.com/api/family/${patientId}`,
+        `http://localhost:5000/api/family/${patientId}`,
         payload,
         {
           headers: {

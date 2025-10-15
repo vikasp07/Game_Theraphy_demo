@@ -26,7 +26,7 @@ const EDiary = () => {
 
     try {
       const res = await axios.post(
-        "https://game-theraphy-backend.onrender.com/api/ediary",
+        "http://localhost:5000/api/ediary",
         formData,
         {
           headers: {

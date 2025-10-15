@@ -284,7 +284,7 @@ const FamilyTreeGame = () => {
       );
 
       const response = await axios.get(
-        `https://game-theraphy-backend.onrender.com/api/family/${patientId}`,
+        `http://localhost:5000/api/family/${patientId}`,
         {
           headers: { "x-auth-token": token },
         }
@@ -356,7 +356,7 @@ const FamilyTreeGame = () => {
   const startSession = async () => {
     try {
       const response = await axios.post(
-        "https://game-theraphy-backend.onrender.com/api/games/start",
+        "http://localhost:5000/api/games/start",
         { gameId: "family_tree", gameName: "Family Tree Game", startLevel: 1 },
         {
           headers: {
@@ -388,7 +388,7 @@ const FamilyTreeGame = () => {
       };
       console.log("Sending progress data:", payload);
       const response = await axios.post(
-        "https://game-theraphy-backend.onrender.com/api/games/progress",
+        "http://localhost:5000/api/games/progress",
         payload,
         {
           headers: {
@@ -585,7 +585,7 @@ const FamilyTreeGame = () => {
                       >
                         {slot.imageUrl ? (
                           <img
-                            src={`https://game-theraphy-backend.onrender.com/uploads/family/${slot.imageUrl}`}
+                            src={`http://localhost:5000/uploads/family/${slot.imageUrl}`}
                             alt={slot.relation}
                             className="family-image"
                           />
@@ -635,7 +635,7 @@ const FamilyTreeGame = () => {
             >
               {currentCard.imageUrl ? (
                 <img
-                  src={`https://game-theraphy-backend.onrender.com/uploads/family/${currentCard.imageUrl}`}
+                  src={`http://localhost:5000/uploads/family/${currentCard.imageUrl}`}
                   alt={currentCard.relation}
                   className="family-image"
                 />

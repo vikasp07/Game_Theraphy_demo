@@ -38,7 +38,7 @@ const MemoryMatch = () => {
   const startNewSession = useCallback(async () => {
     try {
       const response = await axios.post(
-        "https://game-theraphy-backend.onrender.com/api/games/start",
+        "http://localhost:5000/api/games/start",
         { gameId: "memory_match", gameName: "Memory Match", startLevel },
         {
           headers: {
@@ -126,7 +126,7 @@ const MemoryMatch = () => {
 
     try {
       const response = await axios.post(
-        "https://game-theraphy-backend.onrender.com/api/games/progress",
+        "http://localhost:5000/api/games/progress",
         payload,
         {
           headers: {

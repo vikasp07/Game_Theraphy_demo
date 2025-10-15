@@ -81,7 +81,12 @@ app.use("/api/family", familyRoutes);
 app.use("/api/detail", detailRoutes);
 app.use("/api/notifications", notificationsRoutes);
 app.use("/api", userRoutes);
-app.use("/api/chat", auth, chatRoutes);
+// In demo mode, allow chat without auth
+if (process.env.DEMO_MODE === "true") {
+  app.use("/api/chat", chatRoutes);
+} else {
+  app.use("/api/chat", auth, chatRoutes);
+}
 app.use("/api/ediary", ediaryRoutes);
 app.use("/api/leaderboard", leaderboardRoutes);
 

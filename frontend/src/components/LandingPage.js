@@ -1,5 +1,6 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { isDemoMode, setDemoMode } from "../demoConfig";
 import "./LandingPage.css";
 
 const LandingPage = () => {
@@ -53,6 +54,48 @@ const LandingPage = () => {
             >
               LOGIN
             </button>
+            {/* Demo toggle (optional) */}
+            <button
+              style={{
+                height: "40px",
+                width: "130px",
+                padding: "10px 15px",
+                margin: "10px",
+                fontSize: "0.85rem",
+                fontWeight: "600",
+                borderRadius: "5px",
+                border: isDemoMode() ? "2px solid #10b981" : "2px solid #ef4444",
+                cursor: "pointer",
+                background: isDemoMode() 
+                  ? "linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%)" 
+                  : "linear-gradient(135deg, #1e293b 0%, #334155 100%)",
+                color: "#fff",
+                boxShadow: isDemoMode() 
+                  ? "0 4px 12px rgba(16, 185, 129, 0.4)" 
+                  : "0 4px 12px rgba(239, 68, 68, 0.4)",
+                transition: "all 0.3s ease",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                whiteSpace: "nowrap",
+              }}
+              onMouseOver={(e) => {
+                e.currentTarget.style.transform = "translateY(-2px)";
+                e.currentTarget.style.boxShadow = isDemoMode() 
+                  ? "0 6px 16px rgba(16, 185, 129, 0.6)" 
+                  : "0 6px 16px rgba(239, 68, 68, 0.6)";
+              }}
+              onMouseOut={(e) => {
+                e.currentTarget.style.transform = "translateY(0)";
+                e.currentTarget.style.boxShadow = isDemoMode() 
+                  ? "0 4px 12px rgba(16, 185, 129, 0.4)" 
+                  : "0 4px 12px rgba(239, 68, 68, 0.4)";
+              }}
+              onClick={() => setDemoMode(!isDemoMode())}
+              title="Toggle demo mode"
+            >
+              {isDemoMode() ? "🟢 Demo: ON" : "🔴 Demo: OFF"}
+            </button>
           </div>
         </div>
 
@@ -62,30 +105,78 @@ const LandingPage = () => {
           <div id="drishti">Gaming Made for YouAdaptive, Inclusive, Fun!</div>
         </div>
 
+        {/* Role selection for direct access */}
         <div id="get-started">
-          <button
-            style={{
-              height: "45px",
-              width: "fit-content",
-              padding: "0px 25px",
-              margin: "10px",
-              fontSize: "1rem",
-              borderRadius: "5px",
-              border: "none",
-              cursor: "pointer",
-              background:
-                "linear-gradient(to right,rgb(208, 121, 243),rgb(154, 53, 194))",
-              boxShadow: "inset 0 0 50px rgba(0, 0, 0, 0.1)",
-              color: "#fff",
-              transition: "background-color 0.3s",
-              alignItems: "center",
-              justifyContent: "center",
-              marginLeft: "50px",
-            }}
-            onClick={() => navigate("/login")}
-          >
-            Get Started
-          </button>
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center" }}>
+            <button
+              style={{
+                height: "45px",
+                width: "fit-content",
+                padding: "0px 25px",
+                margin: "10px",
+                fontSize: "1rem",
+                borderRadius: "5px",
+                border: "none",
+                cursor: "pointer",
+                background:
+                  "linear-gradient(to right,rgb(208, 121, 243),rgb(154, 53, 194))",
+                boxShadow: "inset 0 0 50px rgba(0, 0, 0, 0.1)",
+                color: "#fff",
+                transition: "background-color 0.3s",
+              }}
+              onClick={() => {
+                // Default to demo mode navigation
+                localStorage.setItem("role", "player");
+                navigate("/dashboard");
+              }}
+            >
+              Continue as Player
+            </button>
+            <button
+              style={{
+                height: "45px",
+                width: "fit-content",
+                padding: "0px 25px",
+                margin: "10px",
+                fontSize: "1rem",
+                borderRadius: "5px",
+                border: "none",
+                cursor: "pointer",
+                background: "linear-gradient(to right, #4f46e5, #06b6d4)",
+                boxShadow: "inset 0 0 50px rgba(0, 0, 0, 0.1)",
+                color: "#fff",
+                transition: "background-color 0.3s",
+              }}
+              onClick={() => {
+                localStorage.setItem("role", "guardian");
+                navigate("/guardian-dashboard");
+              }}
+            >
+              Continue as Guardian
+            </button>
+            <button
+              style={{
+                height: "45px",
+                width: "fit-content",
+                padding: "0px 25px",
+                margin: "10px",
+                fontSize: "1rem",
+                borderRadius: "5px",
+                border: "none",
+                cursor: "pointer",
+                background: "linear-gradient(to right, #10b981, #22c55e)",
+                boxShadow: "inset 0 0 50px rgba(0, 0, 0, 0.1)",
+                color: "#fff",
+                transition: "background-color 0.3s",
+              }}
+              onClick={() => {
+                localStorage.setItem("role", "doctor");
+                navigate("/doctor-dashboard");
+              }}
+            >
+              Continue as Doctor
+            </button>
+          </div>
         </div>
       </div>
       <div id="nextscroll_1">

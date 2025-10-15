@@ -12,7 +12,7 @@ const Leaderboard = () => {
       try {
         const token = localStorage.getItem("token");
         const res = await axios.get(
-          "https://game-theraphy-backend.onrender.com/api/leaderboard",
+          "http://localhost:5000/api/leaderboard",
           {
             headers: { "x-auth-token": token },
           }

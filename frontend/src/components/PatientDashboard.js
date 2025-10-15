@@ -2,13 +2,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
-import ProgressGraph from "./ProgressGraph";
 import "./patient-dashboard.css";
+import { isDemoMode, DEMO_USERS, DEMO_GAMES } from "../demoConfig";
 
 const PatientDashboard = () => {
   const [user, setUser] = useState(null);
   const [games, setGames] = useState([]);
-  const [progressData, setProgressData] = useState([]);
   const [error, setError] = useState("");
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
@@ -17,18 +16,22 @@ const PatientDashboard = () => {
   useEffect(() => {
     fetchUserData();
     fetchGames();
-    fetchProgress();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const fetchUserData = async () => {
     try {
       const token = localStorage.getItem("token");
-      if (!token) {
+      if (!token && isDemoMode()) {
+        // Demo user
+        setUser(DEMO_USERS.player);
+        return;
+      } else if (!token) {
         navigate("/login");
         return;
       }
       const res = await axios.get(
-        "https://game-theraphy-backend.onrender.com/api/detail",
+        "http://localhost:5000/api/detail",
         {
           headers: { "x-auth-token": token },
         }
@@ -42,12 +45,15 @@ const PatientDashboard = () => {
   const fetchGames = async () => {
     try {
       const token = localStorage.getItem("token");
-      if (!token) {
+      if (!token && isDemoMode()) {
+        setGames(DEMO_GAMES);
+        return;
+      } else if (!token) {
         navigate("/login");
         return;
       }
       const res = await axios.get(
-        "https://game-theraphy-backend.onrender.com/api/patient/games",
+        "http://localhost:5000/api/patient/games",
         {
           headers: { "x-auth-token": token },
         }
@@ -58,28 +64,14 @@ const PatientDashboard = () => {
     }
   };
 
-  const fetchProgress = async () => {
-    try {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        navigate("/login");
-        return;
-      }
-      const res = await axios.get(
-        "https://game-theraphy-backend.onrender.com/api/patient/progress",
-        {
-          headers: { "x-auth-token": token },
-        }
-      );
-      setProgressData(res.data);
-    } catch (error) {
-      setError("Failed to load progress.");
-    }
-  };
-
   const handleLogout = () => {
     localStorage.removeItem("token");
-    navigate("/login");
+    if (isDemoMode()) {
+      // In demo mode, go back to landing
+      navigate("/");
+    } else {
+      navigate("/login");
+    }
   };
 
   const toggleDropdown = () => {
@@ -101,7 +93,7 @@ const PatientDashboard = () => {
         <div className="profile-dropdown" ref={dropdownRef}>
           {user?.profilePic ? (
             <img
-              src={`https://game-theraphy-backend.onrender.com/${user.profilePic.replace(/\\/g, "/")}`}
+              src={`http://localhost:5000/${user.profilePic.replace(/\\/g, "/")}`}
               alt="Profile"
               className="profile-pic"
               onClick={toggleDropdown}
@@ -119,7 +111,7 @@ const PatientDashboard = () => {
               <div className="dropdown-header">
                 {user?.profilePic ? (
                   <img
-                    src={`https://game-theraphy-backend.onrender.com/${user.profilePic.replace(/\\/g, "/")}`}
+                    src={`http://localhost:5000/${user.profilePic.replace(/\\/g, "/")}`}
                     alt="Profile"
                     className="dropdown-profile-pic"
                   />
@@ -161,6 +153,11 @@ const PatientDashboard = () => {
 
       <div className="dashboard-container">
         <main className="main-content">
+          {isDemoMode() && !localStorage.getItem("token") && (
+            <div style={{ background: "#fef3c7", padding: "10px", margin: "10px 0", borderRadius: "5px", border: "1px solid #f59e0b" }}>
+              <strong>Demo Mode:</strong> You're viewing the player dashboard with sample data. Click games to play!
+            </div>
+          )}
           {error && <p className="error">{error}</p>}
 
           {/* Play & Enjoy Section */}

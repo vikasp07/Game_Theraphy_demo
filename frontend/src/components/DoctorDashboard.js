@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { isDemoMode } from "../demoConfig";
 
 const DoctorDashboard = () => {
   const [seminars, setSeminars] = useState([]);
@@ -20,14 +21,21 @@ const DoctorDashboard = () => {
   const fetchSeminars = useCallback(async () => {
     try {
       const token = localStorage.getItem("token");
-      if (!token) {
+      if (!token && isDemoMode()) {
+        // Provide some demo seminars
+        setSeminars([
+          { _id: "s1", title: "Cognitive Therapy 101", description: "Basics and benefits.", startTime: new Date().toISOString(), endTime: new Date(Date.now() + 3600000).toISOString() },
+          { _id: "s2", title: "Family Engagement", description: "Best practices for guardians.", startTime: new Date().toISOString(), endTime: new Date(Date.now() + 7200000).toISOString() },
+        ]);
+        return;
+      } else if (!token) {
         setError("No token found. Please log in.");
         navigate("/login");
         return;
       }
 
       const res = await axios.get(
-        "https://game-theraphy-backend.onrender.com/api/doctor/seminars",
+        "http://localhost:5000/api/doctor/seminars",
         {
           headers: { "x-auth-token": token },
         }
@@ -53,14 +61,23 @@ const DoctorDashboard = () => {
 
     try {
       const token = localStorage.getItem("token");
-      if (!token) {
+      if (!token && isDemoMode()) {
+        // Add locally
+        setSeminars((prev) => [
+          ...prev,
+          { _id: `demo-${Date.now()}`, ...newSeminar },
+        ]);
+        setSuccess("Seminar scheduled successfully (demo)!");
+        setNewSeminar({ title: "", description: "", startTime: "", endTime: "" });
+        return;
+      } else if (!token) {
         setError("You must be logged in to create a seminar.");
         setLoading(false);
         return;
       }
 
       const res = await axios.post(
-        "https://game-theraphy-backend.onrender.com/api/doctor/seminars",
+        "http://localhost:5000/api/doctor/seminars",
         newSeminar,
         { headers: { "x-auth-token": token } }
       );
@@ -79,6 +96,11 @@ const DoctorDashboard = () => {
   return (
     <div className="container mx-auto p-8">
       <h2 className="text-3xl font-bold text-center mb-6">Doctor Dashboard</h2>
+      {isDemoMode() && !localStorage.getItem("token") && (
+        <div style={{ background: "#fef3c7", padding: "10px", margin: "10px 0", borderRadius: "5px", border: "1px solid #f59e0b" }}>
+          <strong>Demo Mode:</strong> Viewing sample seminars and creating local-only data
+        </div>
+      )}
 
       <div className="bg-white shadow-md rounded p-6 mb-6">
         <h3 className="text-xl font-bold mb-4">Schedule a Seminar</h3>

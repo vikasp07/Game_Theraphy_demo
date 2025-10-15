@@ -79,3 +79,34 @@ Watch our detailed walkthrough of Game Therapy:
    ```bash
    git clone https://github.com/vikasp07/Game-Theraphy.git
    cd Game-Theraphy
+
+### Demo mode (no login required)
+
+This project supports a demo mode so anyone can open it and immediately choose a role (Player, Guardian, or Doctor) and view dashboards without signing up or logging in.
+
+How it works:
+- Frontend shows role selection buttons on the landing page. Clicking a role navigates directly to the corresponding dashboard.
+- Backend bypasses JWT authentication when DEMO_MODE=true, allowing protected routes to respond for exploration. Chat also works without a token in demo mode.
+
+Enable demo mode:
+1) Backend: set environment variable DEMO_MODE=true in a `.env` file in `backend/`.
+2) Frontend: it defaults to demo mode ON. You can toggle from the landing page (Demo: ON/OFF) or set `REACT_APP_DEMO_MODE=true` in `frontend/.env`.
+
+Windows PowerShell quick start:
+
+```powershell
+# In one terminal (backend)
+cd backend
+$env:DEMO_MODE="true"
+npm install
+npm start
+
+# In another terminal (frontend)
+cd ../frontend
+npm install
+npm start
+```
+
+Notes:
+- In demo mode, data like user info, games, and progress are mocked in the frontend. Actions like creating seminars are simulated locally.
+- For production, turn off demo: set DEMO_MODE=false in backend and REACT_APP_DEMO_MODE=false in frontend (or toggle on landing page).

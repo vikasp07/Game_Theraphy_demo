@@ -79,7 +79,7 @@ const StoryGame = () => {
     console.log("Starting session for level:", selectedLevel);
     try {
       const response = await axios.post(
-        "https://game-theraphy-backend.onrender.com/api/games/start",
+        "http://localhost:5000/api/games/start",
         {
           gameId: "story_game", // fixed gameId for Story Game
           gameName: "Story Game",
@@ -116,7 +116,7 @@ const StoryGame = () => {
       };
       console.log("Posting progress data:", payload);
       const response = await axios.post(
-        "https://game-theraphy-backend.onrender.com/api/games/progress",
+        "http://localhost:5000/api/games/progress",
         payload,
         {
           headers: {
