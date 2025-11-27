@@ -5,107 +5,103 @@ const cors = require("cors");
 const passport = require("passport");
 const session = require("express-session");
 const path = require("path");
-const http = require("http"); // Create HTTP server
-const { Server } = require("socket.io"); // Import socket.io
+const http = require("http");
+const { Server } = require("socket.io");
+const MongoStore = require("connect-mongo");
 const Message = require("./models/Message");
 
-// Import Passport authentication
+// Passport Google Auth
 require("./auth/googleAuth");
 const auth = require("./middleware/auth");
 
 const app = express();
-const server = http.createServer(app); // Attach HTTP server
+const server = http.createServer(app);
+
 const io = new Server(server, {
   cors: {
-    origin: "*", // Adjust for security in production
+    origin: "*",
     methods: ["GET", "POST"],
   },
 });
 
-// Middleware
+// ----------------------
+// MIDDLEWARE
+// ----------------------
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cors());
 
-// Serve uploads folder as static assets
+// Serve uploaded files
 app.use("/uploads", express.static(path.join(__dirname, "uploads")));
 
-// Express session middleware (Required for Passport)
+// ----------------------
+// EXPRESS SESSION (Production Safe)
+// ----------------------
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "thisshouldbeabettersecret!",
     resave: false,
     saveUninitialized: false,
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGO_URI,
+    }),
+    cookie: {
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
+    },
   })
 );
 
-// Initialize Passport.js
+// Passport Initialize
 app.use(passport.initialize());
 app.use(passport.session());
 
-// MongoDB Connection
+// ----------------------
+// MONGODB CONNECTION (No Deprecated Options)
+// ----------------------
 mongoose
-  .connect(process.env.MONGO_URI, {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
+  .connect(process.env.MONGO_URI)
   .then(() => console.log("✅ MongoDB connected"))
   .catch((err) => console.error("❌ MongoDB connection error:", err));
 
-// Import Routes
-const authRoutes = require("./routes/auth");
-const googleAuthRoutes = require("./routes/googleAuthRoutes");
-const gameRoutes = require("./routes/games");
-const doctorRoutes = require("./routes/doctor");
-const patientRoutes = require("./routes/patient");
-const guardianRoutes = require("./routes/guardian");
-const tasksRoutes = require("./routes/tasks");
-const familyRoutes = require("./routes/family");
-const detailRoutes = require("./routes/detail");
-const notificationsRoutes = require("./routes/notifications");
-const userRoutes = require("./routes/userRoutes");
-const chatRoutes = require("./routes/chat");
-const ediaryRoutes = require("./routes/ediary");
-const leaderboardRoutes = require("./routes/leaderboard");
+// ----------------------
+// ROUTES
+// ----------------------
+app.use("/api/auth", require("./routes/auth"));
+app.use("/api/auth", require("./routes/googleAuthRoutes"));
+app.use("/api/games", require("./routes/games"));
+app.use("/api/doctor", require("./routes/doctor"));
+app.use("/api/patient", require("./routes/patient"));
+app.use("/api/guardian", require("./routes/guardian"));
+app.use("/api/tasks", require("./routes/tasks"));
+app.use("/api/family", require("./routes/family"));
+app.use("/api/detail", require("./routes/detail"));
+app.use("/api/notifications", require("./routes/notifications"));
+app.use("/api", require("./routes/userRoutes"));
+app.use("/api/ediary", require("./routes/ediary"));
+app.use("/api/leaderboard", require("./routes/leaderboard"));
 
-
-// Use Routes
-app.use("/api/auth", authRoutes);
-app.use("/api/auth", googleAuthRoutes);
-app.use("/api/games", gameRoutes);
-app.use("/api/doctor", doctorRoutes);
-app.use("/api/patient", patientRoutes);
-app.use("/api/guardian", guardianRoutes);
-app.use("/api/tasks", tasksRoutes);
-app.use("/api/family", familyRoutes);
-app.use("/api/detail", detailRoutes);
-app.use("/api/notifications", notificationsRoutes);
-app.use("/api", userRoutes);
-// In demo mode, allow chat without auth
+// Chat routes (demo mode option)
 if (process.env.DEMO_MODE === "true") {
-  app.use("/api/chat", chatRoutes);
+  app.use("/api/chat", require("./routes/chat"));
 } else {
-  app.use("/api/chat", auth, chatRoutes);
+  app.use("/api/chat", auth, require("./routes/chat"));
 }
-app.use("/api/ediary", ediaryRoutes);
-app.use("/api/leaderboard", leaderboardRoutes);
 
-// Create a global object to track online users
+// ----------------------
+// SOCKET.IO CHAT LOGIC
+// ----------------------
 const onlineUsers = {};
 
-// Socket.IO Chatroom and Task Notification Logic
 io.on("connection", (socket) => {
   console.log("🟢 New user connected:", socket.id);
 
-  // Handle user registration
   socket.on("register", (username) => {
     onlineUsers[username] = socket.id;
     socket.username = username;
     io.emit("userList", Object.keys(onlineUsers));
-    console.log(`User registered: ${username} with socket id ${socket.id}`);
+    console.log(`User registered: ${username}`);
   });
 
-  // Handle sending and receiving messages
   socket.on("sendMessage", async (msgData) => {
     try {
       const newMessage = new Message({
@@ -115,18 +111,16 @@ io.on("connection", (socket) => {
       });
       await newMessage.save();
       io.emit("receiveMessage", newMessage);
-    } catch (error) {
-      console.error("Error handling message:", error);
+    } catch (err) {
+      console.error("Message error:", err);
       socket.emit("messageError", { error: "Failed to send message" });
     }
   });
 
-  // Handle task notifications for patients
   socket.on("newTaskAssigned", ({ patientId, message }) => {
-    io.emit(`taskNotification-${patientId}`, message); // Notify specific patient
+    io.emit(`taskNotification-${patientId}`, message);
   });
 
-  // Handle user disconnection
   socket.on("disconnect", () => {
     if (socket.username) {
       delete onlineUsers[socket.username];
@@ -137,11 +131,17 @@ io.on("connection", (socket) => {
   });
 });
 
-// Default Route
+// ----------------------
+// DEFAULT ROUTE
+// ----------------------
 app.get("/", (req, res) => {
   res.send("✅ Server is running...");
 });
 
-// Start the Server - Use `server.listen` instead of `app.listen`
+// ----------------------
+// SERVER START
+// ----------------------
 const PORT = process.env.PORT || 5000;
-server.listen(PORT, () => console.log(`🚀 Server running on port ${PORT}`));
+server.listen(PORT, () =>
+  console.log(`🚀 Server running on port ${PORT}`)
+);
