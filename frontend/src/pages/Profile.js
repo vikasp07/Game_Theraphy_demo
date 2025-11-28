@@ -103,12 +103,12 @@ const Profile = () => {
     console.log("Updating profile with payload:", payload);
     try {
       const res = await axios.patch(
-        \"https://game-theraphy-backend.onrender.com/api/detail\",
+        "https://game-theraphy-backend.onrender.com/api/detail",
         payload,
         {
           headers: {
-            \"x-auth-token\": token,
-            \"Content-Type\": \"application/json\",
+            "x-auth-token": token,
+            "Content-Type": "application/json",
           },
         }
       );
