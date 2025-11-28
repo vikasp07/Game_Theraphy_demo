@@ -19,7 +19,7 @@ const GuardianDashboard = () => {
         return;
       }
       const res = await axios.get(
-        "http://localhost:5000/api/guardian/players/games",
+        "https://game-theraphy-backend.onrender.com/api/guardian/players/games",
         {
           headers: { "x-auth-token": token },
         }

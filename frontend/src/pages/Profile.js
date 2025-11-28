@@ -37,7 +37,7 @@ const Profile = () => {
     const fetchProfile = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:5000/api/detail",
+          "https://game-theraphy-backend.onrender.com/api/detail",
           {
             headers: { "x-auth-token": token },
           }
@@ -74,7 +74,7 @@ const Profile = () => {
       formData.append("profilePic", selectedFile);
       try {
         const photoRes = await axios.post(
-          "http://localhost:5000/api/detail/photo",
+          "https://game-theraphy-backend.onrender.com/api/detail/photo",
           formData,
           {
             headers: {
@@ -103,12 +103,12 @@ const Profile = () => {
     console.log("Updating profile with payload:", payload);
     try {
       const res = await axios.patch(
-        "http://localhost:5000/api/detail",
+        \"https://game-theraphy-backend.onrender.com/api/detail\",
         payload,
         {
           headers: {
-            "x-auth-token": token,
-            "Content-Type": "application/json",
+            \"x-auth-token\": token,
+            \"Content-Type\": \"application/json\",
           },
         }
       );
@@ -132,7 +132,7 @@ const Profile = () => {
         <div className="profile-detail">
           {profile.profilePic ? (
             <img
-              src={`http://localhost:5000/${profile.profilePic.replace(/\\/g, "/")}`}
+              src={`https://game-theraphy-backend.onrender.com/${profile.profilePic.replace(/\\/g, "/")}`}
               alt="Profile"
               className="profile-photo"
             />

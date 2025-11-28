@@ -83,7 +83,7 @@ import io from "socket.io-client";
 import axios from "axios";
 import { isDemoMode, DEMO_USERS } from "../demoConfig";
 
-const socket = io("http://localhost:5000");
+const socket = io("https://game-theraphy-backend.onrender.com");
 
 const Chatroom = () => {
   const [messages, setMessages] = useState([]);
@@ -116,7 +116,7 @@ const Chatroom = () => {
         return;
       }
       const res = await axios.get(
-        "http://localhost:5000/api/auth/user",
+        "https://game-theraphy-backend.onrender.com/api/auth/user",
         {
           headers: { "x-auth-token": token },
         }

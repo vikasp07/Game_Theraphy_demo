@@ -370,13 +370,13 @@ const Register = () => {
       }
 
       const res = await axios.post(
-        "http://localhost:5000/api/auth/register",
+        "https://game-theraphy-backend.onrender.com/api/auth/register",
         requestBody,
         { headers: { "Content-Type": "application/json" } }
       );
 
       await axios.post(
-        "http://localhost:5000/api/detail",
+        "https://game-theraphy-backend.onrender.com/api/detail",
         { name: requestBody.name, email: requestBody.email },
         {
           headers: {

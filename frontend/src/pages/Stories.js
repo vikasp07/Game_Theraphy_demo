@@ -14,7 +14,7 @@ const Stories = () => {
     const fetchStories = async () => {
       try {
         const res = await axios.get(
-          "http://localhost:5000/api/ediary",
+          "https://game-theraphy-backend.onrender.com/api/ediary",
           {
             headers: { "x-auth-token": token },
           }
@@ -46,7 +46,7 @@ const Stories = () => {
           {stories.map((story) => {
             // Construct and encode the file URL
             const fileURL = encodeURI(
-              `http://localhost:5000/${story.voiceNote.replace(/\\/g, "/")}`
+              `https://game-theraphy-backend.onrender.com/${story.voiceNote.replace(/\\/g, "/")}`
             );
             return (
               <div key={story._id} className="story-card">

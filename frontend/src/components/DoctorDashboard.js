@@ -35,7 +35,7 @@ const DoctorDashboard = () => {
       }
 
       const res = await axios.get(
-        "http://localhost:5000/api/doctor/seminars",
+        "https://game-theraphy-backend.onrender.com/api/doctor/seminars",
         {
           headers: { "x-auth-token": token },
         }
@@ -77,7 +77,7 @@ const DoctorDashboard = () => {
       }
 
       const res = await axios.post(
-        "http://localhost:5000/api/doctor/seminars",
+        "https://game-theraphy-backend.onrender.com/api/doctor/seminars",
         newSeminar,
         { headers: { "x-auth-token": token } }
       );

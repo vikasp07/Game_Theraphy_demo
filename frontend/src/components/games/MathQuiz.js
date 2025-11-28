@@ -32,7 +32,7 @@ const MathQuiz = () => {
   const startNewSession = useCallback(async () => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/games/start",
+        "https://game-theraphy-backend.onrender.com/api/games/start",
         { gameId: "math_quiz", gameName: "Math Quiz", startLevel },
         {
           headers: {
@@ -113,7 +113,7 @@ const MathQuiz = () => {
 
     try {
       await axios.post(
-        "http://localhost:5000/api/games/progress",
+        "https://game-theraphy-backend.onrender.com/api/games/progress",
         payload,
         {
           headers: {

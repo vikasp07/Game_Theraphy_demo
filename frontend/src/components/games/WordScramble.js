@@ -27,7 +27,7 @@ const WordScramble = () => {
       // Send progress data to the backend
       try {
         await axios.post(
-          "http://localhost:5000/api/patient/progress",
+          "https://game-theraphy-backend.onrender.com/api/patient/progress",
           { gameId: "word_scramble", score: score + 1 },
           { headers: { "x-auth-token": token } }
         );

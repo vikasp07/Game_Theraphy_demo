@@ -26,7 +26,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const res = await axios.post(
-        "http://localhost:5000/api/auth/login",
+        "https://game-theraphy-backend.onrender.com/api/auth/login",
         user
       );
 
@@ -50,7 +50,7 @@ const Login = () => {
 
   const handleGoogleLogin = () => {
     window.location.href =
-      "http://localhost:5000/api/auth/google";
+      "https://game-theraphy-backend.onrender.com/api/auth/google";
   };
 
   return (

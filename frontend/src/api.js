@@ -1,7 +1,7 @@
 import axios from "axios";
 
-// const API_URL = "http://localhost:5000/api/auth";
-const API_URL = "http://localhost:5000/api/auth";
+// const API_URL = "https://game-theraphy-backend.onrender.com/api/auth";
+const API_URL = "https://game-theraphy-backend.onrender.com/api/auth";
 
 // Axios interceptor to add token to all requests
 axios.interceptors.request.use((config) => {

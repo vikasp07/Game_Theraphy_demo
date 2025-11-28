@@ -46,8 +46,8 @@ const FamilyMatchGame = () => {
         patientIdFromToken ||
         localStorage.getItem("patientId") ||
         "67adc06b470800e14d60b80";
-      const response = await axios.get(
-        `http://localhost:5000/api/family/${patientId}`,
+        const response = await axios.get(
+        `https://game-theraphy-backend.onrender.com/api/family/${patientId}`,
         {
           headers: { "x-auth-token": token },
         }
@@ -60,7 +60,7 @@ const FamilyMatchGame = () => {
       const processedData = data.map((member) => ({
         ...member,
         photo: member.imageUrl
-          ? `http://localhost:5000/uploads/family/${member.imageUrl}`
+          ? `https://game-theraphy-backend.onrender.com/uploads/family/${member.imageUrl}`
           : "https://via.placeholder.com/150",
       }));
       setFamilyData(processedData);

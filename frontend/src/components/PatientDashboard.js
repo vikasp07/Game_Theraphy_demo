@@ -42,7 +42,7 @@ const PatientDashboard = () => {
       }
       
       const res = await axios.get(
-        "http://localhost:5000/api/detail",
+        "https://game-theraphy-backend.onrender.com/api/detail",
         {
           headers: { "x-auth-token": token },
         }
@@ -64,7 +64,7 @@ const PatientDashboard = () => {
         return;
       }
       const res = await axios.get(
-        "http://localhost:5000/api/patient/games",
+        "https://game-theraphy-backend.onrender.com/api/patient/games",
         {
           headers: { "x-auth-token": token },
         }
@@ -107,7 +107,7 @@ const PatientDashboard = () => {
         </div>
         <div className="profile-dropdown" ref={dropdownRef}>
           <img
-            src={user?.profilePic ? `http://localhost:5000/${user.profilePic.replace(/\\/g, "/")}` : "/default-profile.png"}
+            src={user?.profilePic ? `https://game-theraphy-backend.onrender.com/${user.profilePic.replace(/\\/g, "/")}` : "/default-profile.png"}
             alt="Profile"
             className="profile-pic"
             onClick={toggleDropdown}
@@ -121,7 +121,7 @@ const PatientDashboard = () => {
             <div className="dropdown-menu">
               <div className="dropdown-header">
                 <img
-                  src={user?.profilePic ? `http://localhost:5000/${user.profilePic.replace(/\\/g, "/")}` : "/default-profile.png"}
+                  src={user?.profilePic ? `https://game-theraphy-backend.onrender.com/${user.profilePic.replace(/\\/g, "/")}` : "/default-profile.png"}
                   alt="Profile"
                   className="dropdown-profile-pic"
                   onError={(e) => { e.target.src = "/default-profile.png"; }}
