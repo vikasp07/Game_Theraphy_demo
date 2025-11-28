@@ -14,7 +14,7 @@ Backend runs on: `http://localhost:5000`
 cd frontend
 npm start
 ```
-Frontend runs on: `http://localhost:3000`
+Frontend runs on: `https://game-theraphy-backend.onrender.com`
 
 ### Step 3: Select Role
 Click one of three buttons:

@@ -79,7 +79,7 @@ npm install
 npm start
 ```
 
-The frontend should automatically open on `http://localhost:3000`
+The frontend should automatically open on `https://game-theraphy-backend.onrender.com`
 
 ---
 

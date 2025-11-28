@@ -16,7 +16,7 @@ router.get(
   "/google/callback",
   passport.authenticate("google", {
     session: false,
-    failureRedirect: "http://localhost:3000/login",
+    failureRedirect: "https://game-theraphy-backend.onrender.com/login",
   }),
   async (req, res) => {
     try {
@@ -26,7 +26,7 @@ router.get(
       const existingUser = await User.findOne({ email });
 
       if (!existingUser) {
-        return res.redirect("http://localhost:3000/login?error=unregistered");
+        return res.redirect("https://game-theraphy-backend.onrender.com/login?error=unregistered");
       }
 
       // Generate JWT token for registered users
@@ -34,7 +34,7 @@ router.get(
         expiresIn: "1h",
       });
 
-      res.redirect(`http://localhost:3000/dashboard?token=${token}`);
+      res.redirect(`https://game-theraphy-backend.onrender.com/dashboard?token=${token}`);
     } catch (error) {
       console.error("Google authentication error:", error);
       res.status(500).json({ msg: "Server error" });

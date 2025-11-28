@@ -57,7 +57,7 @@ npm start
 
 ### What Happens Next
 1. Backend starts on `http://localhost:5000`
-2. Frontend starts on `http://localhost:3000`
+2. Frontend starts on `https://game-theraphy-backend.onrender.com`
 3. Browser opens to landing page
 4. Click any role button
 5. Dashboard loads instantly
@@ -530,7 +530,7 @@ cd backend && npm start  # Terminal 1
 cd frontend && npm start # Terminal 2
 ```
 
-Then open: `http://localhost:3000`
+Then open: `https://game-theraphy-backend.onrender.com`
 
 ---
 

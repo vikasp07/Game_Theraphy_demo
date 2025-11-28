@@ -135,7 +135,7 @@
 //       let user = await User.findOne({ email });
 
 //       if (!user) {
-//         return res.redirect("http://localhost:3000/login?error=unregistered");
+//         return res.redirect("https://game-theraphy-backend.onrender.com/login?error=unregistered");
 //       }
 
 //       const token = jwt.sign(
@@ -146,7 +146,7 @@
 //         },
 //       );
 
-//       res.redirect(`http://localhost:3000/dashboard?token=${token}`);
+//       res.redirect(`https://game-theraphy-backend.onrender.com/dashboard?token=${token}`);
 //     } catch (error) {
 //       console.error("Google authentication error:", error);
 //       res.status(500).json({ msg: "Server error" });
@@ -317,7 +317,7 @@ router.get(
       let user = await User.findOne({ email });
 
       if (!user) {
-        return res.redirect("http://localhost:3000/login?error=unregistered");
+        return res.redirect("https://game-theraphy-backend.onrender.com/login?error=unregistered");
       }
 
       const token = jwt.sign(
@@ -326,7 +326,7 @@ router.get(
         { expiresIn: "1h" }
       );
 
-      res.redirect(`http://localhost:3000/dashboard?token=${token}`);
+      res.redirect(`https://game-theraphy-backend.onrender.com/dashboard?token=${token}`);
     } catch (error) {
       console.error("❌ Google authentication error:", error);
       res.status(500).json({ msg: "Server error" });

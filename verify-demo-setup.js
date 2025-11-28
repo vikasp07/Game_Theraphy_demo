@@ -268,7 +268,7 @@ if (checksFailed === 0) {
   log('\n📖 Next Steps:');
   log('1. Start backend: cd backend && npm start');
   log('2. Start frontend: cd frontend && npm start');
-  log('3. Open http://localhost:3000 in your browser');
+  log('3. Open https://game-theraphy-backend.onrender.com in your browser');
   log('4. Select a role to begin demo\n');
   process.exit(0);
 } else {

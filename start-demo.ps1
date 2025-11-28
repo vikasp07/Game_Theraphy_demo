@@ -53,7 +53,7 @@ if (-not (Test-Path "node_modules")) {
 }
 
 Write-Host ""
-Write-Host "[✓] Frontend is starting on http://localhost:3000" -ForegroundColor Green
+Write-Host "[✓] Frontend is starting on https://game-theraphy-backend.onrender.com" -ForegroundColor Green
 Write-Host "The app will open automatically in your default browser." -ForegroundColor Cyan
 Write-Host ""
 

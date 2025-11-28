@@ -23,7 +23,7 @@ cd frontend
 npm start
 ```
 
-Then open **http://localhost:3000** in your browser!
+Then open **https://game-theraphy-backend.onrender.com** in your browser!
 
 ## 👥 Available Users
 
@@ -199,7 +199,7 @@ For detailed help, see:
 
 2. **Open browser**:
    ```
-   http://localhost:3000
+   https://game-theraphy-backend.onrender.com
    ```
 
 3. **Click role button**:

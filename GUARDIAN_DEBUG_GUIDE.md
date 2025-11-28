@@ -46,7 +46,7 @@ Added comprehensive debugging to `GuardianDashboard.js`:
 4. Close DevTools
 
 ### Step 2: Refresh the Page
-1. Go to `http://localhost:3000`
+1. Go to `https://game-theraphy-backend.onrender.com`
 2. Ensure "Demo: ON" toggle is visible and enabled on landing page
 
 ### Step 3: Open as Guardian

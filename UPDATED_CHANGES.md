@@ -57,7 +57,7 @@ BACK TO HOME PAGE
 ## 🎮 Expected Behavior
 
 ### First Visit
-- Open `http://localhost:3000`
+- Open `https://game-theraphy-backend.onrender.com`
 - See: **Role Selection Page** (3 buttons)
 - NO automatic redirect
 - NO demo toggle button
@@ -107,7 +107,7 @@ BACK TO HOME PAGE
 ### Test 1: Auto-Logout on Home
 1. Start frontend: `npm start`
 2. Open DevTools → Application → Storage
-3. Open home page: `http://localhost:3000`
+3. Open home page: `https://game-theraphy-backend.onrender.com`
 4. Check localStorage - **should be EMPTY**
 5. ✅ All session data cleared
 
@@ -166,7 +166,7 @@ cd frontend
 npm start
 
 # Open browser
-http://localhost:3000
+https://game-theraphy-backend.onrender.com
 
 # Select role (no auto-redirect)
 # Use dashboard

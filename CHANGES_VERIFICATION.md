@@ -128,7 +128,7 @@ SUCCESS RATE: 100%
 
 ```
 STEP 1: Open App
-  Browser → http://localhost:3000
+  Browser → https://game-theraphy-backend.onrender.com
   ↓
 STEP 2: Home Page Loads
   Auto-logout triggered

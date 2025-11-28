@@ -71,7 +71,7 @@ Home Page
 ```powershell
 cd backend && npm start        # Terminal 1
 cd frontend && npm start       # Terminal 2
-# Open http://localhost:3000
+# Open https://game-theraphy-backend.onrender.com
 # Select role → Dashboard
 # Click logout → Back to home
 # Repeat!

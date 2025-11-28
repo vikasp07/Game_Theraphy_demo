@@ -350,7 +350,7 @@ PowerShell -ExecutionPolicy Bypass -File .\start-demo.ps1
 cd backend && npm start  # Terminal 1
 cd frontend && npm start # Terminal 2
 
-# Then open: http://localhost:3000
+# Then open: https://game-theraphy-backend.onrender.com
 ```
 
 ---

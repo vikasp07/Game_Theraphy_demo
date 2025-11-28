@@ -81,7 +81,7 @@ npm start
 ```
 
 ### **Access the App**
-- Open: http://localhost:3000
+- Open: https://game-theraphy-backend.onrender.com
 - Select: Doctor / Guardian / Player
 - Use: No login required!
 
@@ -296,7 +296,7 @@ PowerShell -ExecutionPolicy Bypass -File .\start-demo.ps1
 
 **Open in browser:**
 ```
-http://localhost:3000
+https://game-theraphy-backend.onrender.com
 ```
 
 **Select a role:**
