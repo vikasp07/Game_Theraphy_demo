@@ -1,12 +1,12 @@
 // veshackit/routes/tasks.js
 const express = require("express");
 const router = express.Router();
-const authMiddleware = require("../middleware/authMiddleware");
+const auth = require("../middleware/auth");
 const Task = require("../models/Tasks");
 const User = require("../models/user");
 
 // POST /api/tasks/:patientId - Assign a new task to a patient
-router.post("/:patientId", authMiddleware, async (req, res) => {
+router.post("/:patientId", auth, async (req, res) => {
   try {
     // Ensure that the requester is a guardian
     if (req.user.role !== "guardian") {
@@ -44,7 +44,7 @@ router.post("/:patientId", authMiddleware, async (req, res) => {
 });
 
 // GET /api/tasks/:patientId - Fetch tasks for a specific patient
-router.get("/:patientId", authMiddleware, async (req, res) => {
+router.get("/:patientId", auth, async (req, res) => {
   try {
     const { patientId } = req.params;
     const tasks = await Task.find({ user: patientId }).sort({ createdAt: -1 });
@@ -57,7 +57,7 @@ router.get("/:patientId", authMiddleware, async (req, res) => {
 
 // PATCH /api/tasks/status/:taskId - Update task status (mark as completed)
 // Allow update if user is a guardian OR if the task belongs to the logged in patient.
-router.patch("/status/:taskId", authMiddleware, async (req, res) => {
+router.patch("/status/:taskId", auth, async (req, res) => {
   try {
     const { taskId } = req.params;
     const { completed } = req.body; // expects a boolean value

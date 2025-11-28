@@ -1,31 +1,34 @@
-// Simple demo configuration and mock data used to bypass login/signup
-// Toggle via env var REACT_APP_DEMO_MODE or localStorage flag
+// Simple demo configuration - DEMO MODE ALWAYS ON
+// No toggle needed - demo mode is permanent
 
 export const isDemoMode = () => {
-  const flag = localStorage.getItem("demoMode");
-  if (flag === "true") return true;
-  if (flag === "false") return false;
-  // Default to true to satisfy request: open project without login
-  return process.env.REACT_APP_DEMO_MODE === "false" ? false : true;
+  return true; // Always in demo mode - no authentication required
 };
 
-export const setDemoMode = (value) => {
-  localStorage.setItem("demoMode", value ? "true" : "false");
-};
-
+// User data from database (demo mode only)
 export const DEMO_USERS = {
   player: {
-    name: "Demo Player",
-    email: "player@example.com",
+    _id: "67b01d7596d45b9e9566d3cf",
+    name: "vikasss",
+    email: "vikasss@gmail.com",
+    role: "player",
+    guardian: "67b01cae96d45b9e9566d3c5",
     profilePic: "",
   },
   doctor: {
-    name: "Dr. Demo",
-    email: "doctor@example.com",
+    _id: "67a5c7598becf8fd6cdc8339",
+    name: "bigbulll",
+    email: "bigbull@gmail.com",
+    role: "doctor",
+    profilePic: "",
   },
   guardian: {
-    name: "Guardian Demo",
-    email: "guardian@example.com",
+    _id: "67b01cae96d45b9e9566d3c5",
+    name: "vikass",
+    email: "vikass@gmail.com",
+    role: "guardian",
+    guardian: null,
+    profilePic: "",
   },
 };
 

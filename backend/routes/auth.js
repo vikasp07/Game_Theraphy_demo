@@ -183,7 +183,7 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const passport = require("passport");
 const User = require("../models/user");
-const authMiddleware = require("../middleware/authMiddleware");
+const auth = require("../middleware/auth");
 
 const router = express.Router();
 
@@ -345,7 +345,7 @@ router.get("/logout", (req, res) => {
 });
 
 // ✅ Get User Data (Protected Route)
-router.get("/user", authMiddleware, async (req, res) => {
+router.get("/user", auth, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");
     res.json(user);

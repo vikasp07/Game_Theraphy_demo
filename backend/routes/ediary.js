@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const authMiddleware = require("../middleware/authMiddleware");
+const auth = require("../middleware/auth");
 const EDiary = require("../models/ediary");
 const multer = require("multer");
 const path = require("path");
@@ -25,7 +25,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage });
 
 // GET /api/ediary - Get e-diary entries for the logged-in user
-router.get("/", authMiddleware, async (req, res) => {
+router.get("/", auth, async (req, res) => {
   try {
     // Find all diary entries for the user, sorted by timestamp (most recent first)
     const entries = await EDiary.find({ user: req.user.id }).sort({ timestamp: -1 });
@@ -37,7 +37,7 @@ router.get("/", authMiddleware, async (req, res) => {
 });
 
 // POST /api/ediary - Create a new e-diary entry
-router.post("/", authMiddleware, upload.single("voiceNote"), async (req, res) => {
+router.post("/", auth, upload.single("voiceNote"), async (req, res) => {
   try {
     const { title } = req.body;
     if (!title) {

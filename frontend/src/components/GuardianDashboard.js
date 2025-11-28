@@ -45,14 +45,19 @@ const GuardianDashboard = () => {
     navigate(`/patient-games/${patientId}`);
   };
 
-  // Logout function: clear token and redirect to login
+  // Logout function: clear all session data and redirect to home
   const handleLogout = () => {
+    // Clear all session data
+    localStorage.removeItem("demoRole");
     localStorage.removeItem("token");
-    if (isDemoMode()) {
-      navigate("/");
-    } else {
-      navigate("/login");
-    }
+    localStorage.removeItem("userId");
+    localStorage.removeItem("userName");
+    localStorage.removeItem("userEmail");
+    localStorage.removeItem("userRole");
+    localStorage.removeItem("role");
+    
+    // Always go to home page
+    navigate("/");
   };
 
   console.log("GuardianDashboard render - playersData:", playersData);

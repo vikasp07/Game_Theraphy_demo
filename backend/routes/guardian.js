@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const authMiddleware = require("../middleware/authMiddleware");
+const auth = require("../middleware/auth");
 const User = require("../models/user");
 const Progress = require("../models/Progress");
 
 // GET all players (patients) associated with the guardian along with their game progress
-router.get("/players/games", authMiddleware, async (req, res) => {
+router.get("/players/games", auth, async (req, res) => {
   try {
     // Verify that the logged-in user is a guardian
     if (req.user.role !== "guardian") {
@@ -41,7 +41,7 @@ router.get("/players/games", authMiddleware, async (req, res) => {
 });
 
 // Existing endpoint to fetch progress for a patient by ID remains unchanged
-router.get("/patient/:patientId", authMiddleware, async (req, res) => {
+router.get("/patient/:patientId", auth, async (req, res) => {
   const { patientId } = req.params;
   try {
     const progressData = await Progress.find({ user: patientId });

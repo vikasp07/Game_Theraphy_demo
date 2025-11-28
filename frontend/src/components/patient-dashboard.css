@@ -84,6 +84,13 @@ body {
   object-fit: cover;
   cursor: pointer;
   box-shadow: 0 3px 5px var(--shadow-color);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background-color: #f0f0f0;
+}
+
+.profile-pic:hover {
+  transform: scale(1.1);
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
 }
 
 .dropdown-menu {

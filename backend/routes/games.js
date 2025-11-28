@@ -1,12 +1,12 @@
 const express = require("express");
 const { v4: uuidv4 } = require("uuid"); // Import UUID for session ID
-const authMiddleware = require("../middleware/authMiddleware");
+const auth = require("../middleware/auth");
 const Progress = require("../models/Progress");
 
 const router = express.Router();
 
 // ✅ Start a new game session
-router.post("/start", authMiddleware, async (req, res) => {
+router.post("/start", auth, async (req, res) => {
   try {
     const { gameId, gameName, startLevel } = req.body;
 
@@ -43,7 +43,7 @@ router.post("/start", authMiddleware, async (req, res) => {
 });
 
 // ✅ Save game progress (with levels & time)
-router.post("/progress", authMiddleware, async (req, res) => {
+router.post("/progress", auth, async (req, res) => {
   try {
     const { sessionId, score, completed, mistakes, endLevel, totalTime } =
       req.body;
@@ -87,7 +87,7 @@ router.post("/progress", authMiddleware, async (req, res) => {
 });
 
 // ✅ Fetch user's progress
-router.get("/progress", authMiddleware, async (req, res) => {
+router.get("/progress", auth, async (req, res) => {
   try {
     const progress = await Progress.find({ user: req.user.id });
 

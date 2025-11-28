@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const authMiddleware = require("../middleware/authMiddleware");
+const auth = require("../middleware/auth");
 
 // Sample Games Data (including the Astray and Traffic Run games)
 const games = [
@@ -54,7 +54,7 @@ const games = [
 ];
 
 // GET Available Games
-router.get("/games", authMiddleware, (req, res) => {
+router.get("/games", auth, (req, res) => {
   console.log("Returning games:", games);
   res.json(games);
 });
@@ -69,7 +69,7 @@ const progressData = {
 };
 
 // GET User Progress
-router.get("/progress", authMiddleware, (req, res) => {
+router.get("/progress", auth, (req, res) => {
   console.log("Returning progress:", progressData);
   res.json(progressData);
 });

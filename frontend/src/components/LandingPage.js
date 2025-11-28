@@ -1,101 +1,51 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { isDemoMode, setDemoMode } from "../demoConfig";
+import { DEMO_USERS } from "../demoConfig";
 import "./LandingPage.css";
 
 const LandingPage = () => {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // Auto-logout: Clear session when landing page loads
+    localStorage.removeItem("demoRole");
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("userName");
+    localStorage.removeItem("userEmail");
+    localStorage.removeItem("userRole");
+    localStorage.removeItem("role");
+    
+    console.log("🏠 Home page loaded - Session cleared. Select a role to continue.");
+  }, []);
+
+  const handleRoleSelection = (role) => {
+    // Store the selected role and user data
+    const user = DEMO_USERS[role];
+    localStorage.setItem("demoRole", role);
+    localStorage.setItem("token", "demo-token-" + role);
+    localStorage.setItem("userId", user._id);
+    localStorage.setItem("userName", user.name);
+    localStorage.setItem("userEmail", user.email);
+    localStorage.setItem("userRole", user.role);
+    localStorage.setItem("role", role); // Keep for backward compatibility
+    
+    // Redirect to appropriate dashboard
+    if (role === "doctor") {
+      navigate("/doctor-dashboard");
+    } else if (role === "guardian") {
+      navigate("/guardian-dashboard");
+    } else if (role === "player") {
+      navigate("/dashboard");
+    }
+  };
 
   return (
     <div id="landing-image">
       <div id="landing-page">
         <div id="landing-header">
           <div id="landing-buttons">
-            <button
-              style={{
-                height: "40px",
-                padding: "10px 20px",
-                margin: "10px",
-                fontSize: "1rem",
-                fontFamily: "Inter",
-                borderRadius: "5px",
-                border: "none",
-                cursor: "pointer",
-                background: "linear-gradient(to left, #4B4B4B, #A6A6A6)",
-                boxShadow: "inset 0 0 50px rgba(0, 0, 0, 0.5)",
-
-                color: "#fff",
-                transition: "background-color 0.3s",
-                alignItems: "center",
-              }}
-              onClick={() => navigate("/register")}
-            >
-              REGISTER
-            </button>
-            <button
-              style={{
-                height: "40px",
-                padding: "10px 20px",
-                fontFamily: "Inter",
-                fontSize: "1rem",
-                borderRadius: "5px",
-                border: "none",
-                cursor: "pointer",
-                background:
-                  "linear-gradient(to right,rgb(208, 121, 243),rgb(154, 53, 194))",
-                boxShadow: "inset 0 0 50px rgba(0, 0, 0, 0.1)",
-                color: "#fff",
-                transition: "background-color 0.3s",
-                justifyContent: "space-evenly",
-                margin: "10px",
-                alignItems: "center",
-              }}
-              onClick={() => navigate("/login")}
-            >
-              LOGIN
-            </button>
-            {/* Demo toggle (optional) */}
-            <button
-              style={{
-                height: "40px",
-                width: "130px",
-                padding: "10px 15px",
-                margin: "10px",
-                fontSize: "0.85rem",
-                fontWeight: "600",
-                borderRadius: "5px",
-                border: isDemoMode() ? "2px solid #10b981" : "2px solid #ef4444",
-                cursor: "pointer",
-                background: isDemoMode() 
-                  ? "linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%)" 
-                  : "linear-gradient(135deg, #1e293b 0%, #334155 100%)",
-                color: "#fff",
-                boxShadow: isDemoMode() 
-                  ? "0 4px 12px rgba(16, 185, 129, 0.4)" 
-                  : "0 4px 12px rgba(239, 68, 68, 0.4)",
-                transition: "all 0.3s ease",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                whiteSpace: "nowrap",
-              }}
-              onMouseOver={(e) => {
-                e.currentTarget.style.transform = "translateY(-2px)";
-                e.currentTarget.style.boxShadow = isDemoMode() 
-                  ? "0 6px 16px rgba(16, 185, 129, 0.6)" 
-                  : "0 6px 16px rgba(239, 68, 68, 0.6)";
-              }}
-              onMouseOut={(e) => {
-                e.currentTarget.style.transform = "translateY(0)";
-                e.currentTarget.style.boxShadow = isDemoMode() 
-                  ? "0 4px 12px rgba(16, 185, 129, 0.4)" 
-                  : "0 4px 12px rgba(239, 68, 68, 0.4)";
-              }}
-              onClick={() => setDemoMode(!isDemoMode())}
-              title="Toggle demo mode"
-            >
-              {isDemoMode() ? "🟢 Demo: ON" : "🔴 Demo: OFF"}
-            </button>
+            {/* Demo mode always ON - no toggle needed */}
           </div>
         </div>
 
@@ -105,9 +55,30 @@ const LandingPage = () => {
           <div id="drishti">Gaming Made for YouAdaptive, Inclusive, Fun!</div>
         </div>
 
+        {/* Demo Mode Info Box */}
+        <div style={{
+          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+          color: "white",
+          padding: "20px 30px",
+          margin: "20px auto",
+          borderRadius: "12px",
+          maxWidth: "600px",
+          boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)",
+          textAlign: "center",
+          border: "2px solid rgba(255, 255, 255, 0.3)",
+          backdropFilter: "blur(10px)"
+        }}>
+          <p style={{ margin: "0 0 8px 0", fontSize: "18px", fontWeight: "bold" }}>
+            🎮 Demo Mode - Viewing Project
+          </p>
+          <p style={{ margin: "0", fontSize: "14px", opacity: "0.95" }}>
+            Experience the GameTherapy platform with three pre-configured users. Select a role below to explore the application.
+          </p>
+        </div>
+
         {/* Role selection for direct access */}
         <div id="get-started">
-          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center" }}>
+          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center", justifyContent: "center" }}>
             <button
               style={{
                 height: "45px",
@@ -124,13 +95,9 @@ const LandingPage = () => {
                 color: "#fff",
                 transition: "background-color 0.3s",
               }}
-              onClick={() => {
-                // Default to demo mode navigation
-                localStorage.setItem("role", "player");
-                navigate("/dashboard");
-              }}
+              onClick={() => handleRoleSelection("player")}
             >
-              Continue as Player
+              Continue as Player (vikasss)
             </button>
             <button
               style={{
@@ -147,12 +114,9 @@ const LandingPage = () => {
                 color: "#fff",
                 transition: "background-color 0.3s",
               }}
-              onClick={() => {
-                localStorage.setItem("role", "guardian");
-                navigate("/guardian-dashboard");
-              }}
+              onClick={() => handleRoleSelection("guardian")}
             >
-              Continue as Guardian
+              Continue as Guardian (vikass)
             </button>
             <button
               style={{
@@ -169,12 +133,9 @@ const LandingPage = () => {
                 color: "#fff",
                 transition: "background-color 0.3s",
               }}
-              onClick={() => {
-                localStorage.setItem("role", "doctor");
-                navigate("/doctor-dashboard");
-              }}
+              onClick={() => handleRoleSelection("doctor")}
             >
-              Continue as Doctor
+              Continue as Doctor (bigbulll)
             </button>
           </div>
         </div>

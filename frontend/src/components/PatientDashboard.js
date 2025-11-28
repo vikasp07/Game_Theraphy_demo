@@ -22,14 +22,25 @@ const PatientDashboard = () => {
   const fetchUserData = async () => {
     try {
       const token = localStorage.getItem("token");
-      if (!token && isDemoMode()) {
-        // Demo user
-        setUser(DEMO_USERS.player);
+      const userId = localStorage.getItem("userId");
+      
+      if (isDemoMode() || token?.startsWith("demo-token-")) {
+        // Demo user - construct from localStorage
+        const user = {
+          _id: userId || DEMO_USERS.player._id,
+          name: localStorage.getItem("userName") || DEMO_USERS.player.name,
+          email: localStorage.getItem("userEmail") || DEMO_USERS.player.email,
+          role: localStorage.getItem("userRole") || DEMO_USERS.player.role,
+          guardian: DEMO_USERS.player.guardian,
+          profilePic: "",
+        };
+        setUser(user);
         return;
       } else if (!token) {
         navigate("/login");
         return;
       }
+      
       const res = await axios.get(
         "http://localhost:5000/api/detail",
         {
@@ -65,13 +76,17 @@ const PatientDashboard = () => {
   };
 
   const handleLogout = () => {
+    // Clear all session data
+    localStorage.removeItem("demoRole");
     localStorage.removeItem("token");
-    if (isDemoMode()) {
-      // In demo mode, go back to landing
-      navigate("/");
-    } else {
-      navigate("/login");
-    }
+    localStorage.removeItem("userId");
+    localStorage.removeItem("userName");
+    localStorage.removeItem("userEmail");
+    localStorage.removeItem("userRole");
+    localStorage.removeItem("role");
+    
+    // Always go back to home page (auto-logout)
+    navigate("/");
   };
 
   const toggleDropdown = () => {
@@ -91,37 +106,30 @@ const PatientDashboard = () => {
           <Link to="/pages/Ediary">e-Diary</Link>
         </div>
         <div className="profile-dropdown" ref={dropdownRef}>
-          {user?.profilePic ? (
-            <img
-              src={`http://localhost:5000/${user.profilePic.replace(/\\/g, "/")}`}
-              alt="Profile"
-              className="profile-pic"
-              onClick={toggleDropdown}
-            />
-          ) : (
-            <img
-              src="/default-profile.png"
-              alt="Default Profile"
-              className="profile-pic"
-              onClick={toggleDropdown}
-            />
-          )}
+          <img
+            src={user?.profilePic ? `http://localhost:5000/${user.profilePic.replace(/\\/g, "/")}` : "/default-profile.png"}
+            alt="Profile"
+            className="profile-pic"
+            onClick={toggleDropdown}
+            onError={(e) => { e.target.src = "/default-profile.png"; }}
+            style={{
+              backgroundColor: "#f0f0f0",
+              border: "3px solid white"
+            }}
+          />
           {isDropdownOpen && (
             <div className="dropdown-menu">
               <div className="dropdown-header">
-                {user?.profilePic ? (
-                  <img
-                    src={`http://localhost:5000/${user.profilePic.replace(/\\/g, "/")}`}
-                    alt="Profile"
-                    className="dropdown-profile-pic"
-                  />
-                ) : (
-                  <img
-                    src="/default-profile.png"
-                    alt="Default Profile"
-                    className="dropdown-profile-pic"
-                  />
-                )}
+                <img
+                  src={user?.profilePic ? `http://localhost:5000/${user.profilePic.replace(/\\/g, "/")}` : "/default-profile.png"}
+                  alt="Profile"
+                  className="dropdown-profile-pic"
+                  onError={(e) => { e.target.src = "/default-profile.png"; }}
+                  style={{
+                    backgroundColor: "#f0f0f0",
+                    border: "2px solid white"
+                  }}
+                />
                 <div className="dropdown-user-info">
                   <p className="dropdown-name">{user?.name || "User Name"}</p>
                   <p className="dropdown-email">

@@ -1,7 +1,7 @@
 // veshackit/routes/detail.js
 const express = require("express");
 const router = express.Router();
-const authMiddleware = require("../middleware/authMiddleware");
+const auth = require("../middleware/auth");
 const Detail = require("../models/Detail");
 const multer = require("multer");
 const path = require("path");
@@ -20,7 +20,7 @@ const storage = multer.diskStorage({
   const upload = multer({ storage: storage });
 
 // POST /api/detail - Create profile details for the current user
-router.post("/", authMiddleware, async (req, res) => {
+router.post("/", auth, async (req, res) => {
     try {
       const { name, email } = req.body;
       const detail = new Detail({ user: req.user.id, name, email });
@@ -33,7 +33,7 @@ router.post("/", authMiddleware, async (req, res) => {
   });
   
 // POST /api/detail/photo - Upload/update profile photo for the current user
-router.post("/photo", authMiddleware, upload.single("profilePic"), async (req, res) => {
+router.post("/photo", auth, upload.single("profilePic"), async (req, res) => {
     try {
       if (!req.file) {
         return res.status(400).json({ msg: "No file uploaded." });
@@ -59,7 +59,7 @@ router.post("/photo", authMiddleware, upload.single("profilePic"), async (req, r
   });
   
 // GET /api/detail - Fetch profile details for the current user
-router.get("/", authMiddleware, async (req, res) => {
+router.get("/", auth, async (req, res) => {
   try {
     const detail = await Detail.findOne({ user: req.user.id });
     if (!detail) {
@@ -73,7 +73,7 @@ router.get("/", authMiddleware, async (req, res) => {
 });
 
 // PATCH /api/detail - Update profile details for the current user
-router.patch("/", authMiddleware, async (req, res) => {
+router.patch("/", auth, async (req, res) => {
   try {
     const { name, email, age, gender, birthdate } = req.body;
     

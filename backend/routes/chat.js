@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
 const Message = require("../models/Message");
-const authMiddleware = require("../middleware/authMiddleware");
+const auth = require("../middleware/auth");
 const upload = require("../middleware/upload");
 
 // Get Chat History
-router.get("/", authMiddleware, async (req, res) => {
+router.get("/", auth, async (req, res) => {
   try {
     const messages = await Message.find().sort({ timestamp: 1 });
     res.json(messages);
@@ -15,7 +15,7 @@ router.get("/", authMiddleware, async (req, res) => {
 });
 
 // Store Message
-router.post("/", authMiddleware, async (req, res) => {
+router.post("/", auth, async (req, res) => {
   try {
     const { sender, message } = req.body;
     const newMessage = new Message({ sender, message });
@@ -27,7 +27,7 @@ router.post("/", authMiddleware, async (req, res) => {
 });
 
 
-router.post("/upload", authMiddleware, upload.single("file"), (req, res) => {
+router.post("/upload", auth, upload.single("file"), (req, res) => {
   res.json({ filePath: `/uploads/${req.file.filename}` });
  });
 

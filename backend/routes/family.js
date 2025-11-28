@@ -1,11 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const authMiddleware = require("../middleware/authMiddleware");
+const auth = require("../middleware/auth");
 const Family = require("../models/Family");
 const User = require("../models/user");
 
 // POST /api/family/:patientId - Add a family member record for a patient
-router.post("/:patientId", authMiddleware, async (req, res) => {
+router.post("/:patientId", auth, async (req, res) => {
   try {
     // Ensure the requester is a guardian
     if (req.user.role !== "guardian") {
@@ -42,7 +42,7 @@ router.post("/:patientId", authMiddleware, async (req, res) => {
 });
 
 // Optional: GET /api/family/:patientId - Fetch family records for a patient
-router.get("/:patientId", authMiddleware, async (req, res) => {
+router.get("/:patientId", auth, async (req, res) => {
   try {
     const { patientId } = req.params;
     const familyRecords = await Family.find({ user: patientId });
