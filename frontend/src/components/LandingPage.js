@@ -105,7 +105,7 @@ const LandingPage = () => {
               }}
               onClick={() => handleRoleSelection("player")}
             >
-              Continue as Player (Vikas Pawar)
+              Continue as Player (Vikas)
             </button>
 
             <button
@@ -125,7 +125,7 @@ const LandingPage = () => {
               }}
               onClick={() => handleRoleSelection("guardian")}
             >
-              Continue as Guardian (Mr. Vikas Pawar)
+              Continue as Guardian (Mr.Harish )
             </button>
 
             <button
@@ -145,7 +145,7 @@ const LandingPage = () => {
               }}
               onClick={() => handleRoleSelection("doctor")}
             >
-              Continue as Doctor (Dr. Vikas Pawar)
+              Continue as Doctor (Dr. Hitesh )
             </button>
           </div>
         </div>
