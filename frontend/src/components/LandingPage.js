@@ -15,7 +15,7 @@ const LandingPage = () => {
     localStorage.removeItem("userEmail");
     localStorage.removeItem("userRole");
     localStorage.removeItem("role");
-    
+
     console.log("🏠 Home page loaded - Session cleared. Select a role to continue.");
   }, []);
 
@@ -29,7 +29,7 @@ const LandingPage = () => {
     localStorage.setItem("userEmail", user.email);
     localStorage.setItem("userRole", user.role);
     localStorage.setItem("role", role); // Keep for backward compatibility
-    
+
     // Redirect to appropriate dashboard
     if (role === "doctor") {
       navigate("/doctor-dashboard");
@@ -50,24 +50,25 @@ const LandingPage = () => {
         </div>
 
         <div id="name-vayudrishti">
-          {/* <div id="landing-image"> */}
           <div id="vayu">GameTherapy</div>
           <div id="drishti">Gaming Made for YouAdaptive, Inclusive, Fun!</div>
         </div>
 
         {/* Demo Mode Info Box */}
-        <div style={{
-          background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-          color: "white",
-          padding: "20px 30px",
-          margin: "20px auto",
-          borderRadius: "12px",
-          maxWidth: "600px",
-          boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)",
-          textAlign: "center",
-          border: "2px solid rgba(255, 255, 255, 0.3)",
-          backdropFilter: "blur(10px)"
-        }}>
+        <div
+          style={{
+            background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
+            color: "white",
+            padding: "20px 30px",
+            margin: "20px auto",
+            borderRadius: "12px",
+            maxWidth: "600px",
+            boxShadow: "0 8px 16px rgba(0, 0, 0, 0.2)",
+            textAlign: "center",
+            border: "2px solid rgba(255, 255, 255, 0.3)",
+            backdropFilter: "blur(10px)",
+          }}
+        >
           <p style={{ margin: "0 0 8px 0", fontSize: "18px", fontWeight: "bold" }}>
             🎮 Demo Mode - Viewing Project
           </p>
@@ -78,7 +79,15 @@ const LandingPage = () => {
 
         {/* Role selection for direct access */}
         <div id="get-started">
-          <div style={{ display: "flex", gap: 12, flexWrap: "wrap", alignItems: "center", justifyContent: "center" }}>
+          <div
+            style={{
+              display: "flex",
+              gap: 12,
+              flexWrap: "wrap",
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
             <button
               style={{
                 height: "45px",
@@ -89,16 +98,16 @@ const LandingPage = () => {
                 borderRadius: "5px",
                 border: "none",
                 cursor: "pointer",
-                background:
-                  "linear-gradient(to right,rgb(208, 121, 243),rgb(154, 53, 194))",
+                background: "linear-gradient(to right,rgb(208, 121, 243),rgb(154, 53, 194))",
                 boxShadow: "inset 0 0 50px rgba(0, 0, 0, 0.1)",
                 color: "#fff",
                 transition: "background-color 0.3s",
               }}
               onClick={() => handleRoleSelection("player")}
             >
-              Continue as Player (vikasss)
+              Continue as Player (Vikas Pawar)
             </button>
+
             <button
               style={{
                 height: "45px",
@@ -116,8 +125,9 @@ const LandingPage = () => {
               }}
               onClick={() => handleRoleSelection("guardian")}
             >
-              Continue as Guardian (vikass)
+              Continue as Guardian (Mr. Vikas Pawar)
             </button>
+
             <button
               style={{
                 height: "45px",
@@ -135,14 +145,17 @@ const LandingPage = () => {
               }}
               onClick={() => handleRoleSelection("doctor")}
             >
-              Continue as Doctor (bigbulll)
+              Continue as Doctor (Dr. Vikas Pawar)
             </button>
           </div>
         </div>
       </div>
+
+      {/* Why Choose Us Section */}
       <div id="nextscroll_1">
         <div id="whychoseus">
           <div id="why">Why Choose Us ?</div>
+
           <div class="reason-rows">
             <div id="reason-1">
               <div className="symbol">
@@ -156,6 +169,7 @@ const LandingPage = () => {
               Adaptive Gameplay<br></br>
               Games adjust to your pace
             </div>
+
             <div id="reason-2">
               <div className="symbol">
                 <img
@@ -169,6 +183,7 @@ const LandingPage = () => {
               Get help whenever you need it.
             </div>
           </div>
+
           <div class="reason-rows">
             <div id="reason-3">
               <div className="symbol">
@@ -198,49 +213,40 @@ const LandingPage = () => {
           </div>
         </div>
       </div>
+
+      {/* How It Works Section */}
       <div id="nextscroll_2">
         <div id="how_works">How It Works</div>
 
         <div id="signup_work">
-          <div id="circle_1" class="circle">
-            1
-          </div>
+          <div id="circle_1" class="circle">1</div>
           <div class="how_content">
-            <span style={{ fontWeight: "bold" }}>Sign Up:</span> Create your
-            account.
+            <span style={{ fontWeight: "bold" }}>Sign Up:</span> Create your account.
           </div>
         </div>
 
         <div id="choose_game">
           <div class="how_content">
-            <span style={{ fontWeight: "bold" }}>Choose Your Game:</span>{" "}
-            <br></br>
+            <span style={{ fontWeight: "bold" }}>Choose Your Game:</span> <br />
             Pick what you want to play.
           </div>
-          <div id="circle_2" class="circle">
-            2
-          </div>
+          <div id="circle_2" class="circle">2</div>
         </div>
 
         <div id="play_n_enjoy">
-          <div id="circle_3" class="circle">
-            3
-          </div>
+          <div id="circle_3" class="circle">3</div>
           <div class="how_content">
-            <span style={{ fontWeight: "bold" }}>Play & Enjoy:</span> Start
-            having fun!
+            <span style={{ fontWeight: "bold" }}>Play & Enjoy:</span> Start having fun!
           </div>
         </div>
 
         <div id="track_progress">
           <div class="how_content">
             <span style={{ fontWeight: "bold" }}>Track Your Progress:</span>
-            <br></br>
+            <br />
             See how you're doing.
           </div>
-          <div id="circle_4" class="circle">
-            4
-          </div>
+          <div id="circle_4" class="circle">4</div>
         </div>
       </div>
     </div>
